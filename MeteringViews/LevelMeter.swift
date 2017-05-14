@@ -81,7 +81,7 @@ class LevelMeter: UIView {
             bds = self.bounds
         } else {
             cxt.translateBy(x: 0.0, y: self.bounds.height)
-            cxt.rotate(by: -CGFloat(M_PI_2))
+            cxt.rotate(by: -.pi/2)
             bds = CGRect(x: 0.0, y: 0.0, width: self.bounds.height, height: self.bounds.width)
         }
         

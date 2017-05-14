@@ -584,7 +584,7 @@ class ViewController: UIViewController, AVAudioPlayerDelegate {
     }
     
     func audioPlayerDecodeErrorDidOccur(_ player: AVAudioPlayer, error: Error?) {
-        NSLog("ERROR IN DECODE: \(error)\n")
+        NSLog("ERROR IN DECODE: \(error?.localizedDescription ?? "nil")\n")
     }
     
 }

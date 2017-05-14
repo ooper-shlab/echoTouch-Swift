@@ -138,7 +138,7 @@ struct PowerMeter {
     mutating func savePeaks(_ inFramesToProcess: Int, _ averagePower: Int, _ maxSample: Int) {
         let fAveragePower = Double(averagePower) * 0x1.0p-30	// divide by 2^30
         let peakValue = Double(maxSample) * 0x1.0p-15			// divide by 2^15
-        let powerValue = sqrt(fAveragePower) * M_SQRT2			// formula is to divide
+        let powerValue = sqrt(fAveragePower) * 2.0.squareRoot()			// formula is to divide
         
         mAveragePower = averagePower
         

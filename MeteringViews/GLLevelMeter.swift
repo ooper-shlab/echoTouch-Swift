@@ -160,7 +160,7 @@ class GLLevelMeter: LevelMeter {
                         GLfloat(rect.maxX), GLfloat(rect.minY),
                         GLfloat(rect.minX), GLfloat(rect.maxY),
                         GLfloat(rect.maxX), GLfloat(rect.maxY),
-                        ])
+                        ], count: 8)
                     defer{vertices.deinitialize(count: 8)}
                     
                     let clr = thisThresh.color.cgColor
@@ -225,7 +225,7 @@ class GLLevelMeter: LevelMeter {
                         GLfloat(lightRect.maxX), GLfloat(lightRect.minY),
                         GLfloat(lightRect.minX), GLfloat(lightRect.maxY),
                         GLfloat(lightRect.maxX), GLfloat(lightRect.maxY),
-                        ])
+                        ], count: 8)
                     defer{vertices.deinitialize(count: 8)}
                     
                     glVertexPointer(2, GLenum(GL_FLOAT), 0, vertices)
