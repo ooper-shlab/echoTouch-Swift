@@ -14,7 +14,7 @@ You should not contact to Apple or SHLab(jp) about any faults caused by my trans
 
 ### Build
 
-Xcode 8.1, iOS SDK 10.1
+Xcode 8.3.3, iOS SDK 10
 
 ===========================================================================
 Files under PublicUtility are not fully translated.
