@@ -65,12 +65,12 @@ class AVLevelMeter: UIView {
     private func registerForBackgroundNotifications() {
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(pauseTimer),
-                                               name: .UIApplicationWillResignActive,
+                                               name: UIApplication.willResignActiveNotification,
                                                object: nil)
         
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(resumeTimer),
-                                               name: .UIApplicationWillEnterForeground,
+                                               name: UIApplication.willEnterForegroundNotification,
                                                object: nil)
     }
     
@@ -186,8 +186,8 @@ class AVLevelMeter: UIView {
     }
     
     deinit {
-        NotificationCenter.default.removeObserver(self, name: .UIApplicationWillResignActive, object: nil)
-        NotificationCenter.default.removeObserver(self, name: .UIApplicationWillEnterForeground, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIApplication.willResignActiveNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIApplication.willEnterForegroundNotification, object: nil)
         
         _updateTimer?.invalidate()
         

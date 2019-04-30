@@ -121,9 +121,9 @@ class ViewController: UIViewController, AVAudioPlayerDelegate {
     // we just print out the results for informational purposes
     @objc func handleInterruption(_ notification: Notification) {
         let theInterruptionType = notification.userInfo![AVAudioSessionInterruptionTypeKey] as! UInt
-        NSLog("Session interrupted > --- \(theInterruptionType == AVAudioSessionInterruptionType.began.rawValue ? "Begin Interruption" : "End Interruption") ---\n")
+        NSLog("Session interrupted > --- \(theInterruptionType == AVAudioSession.InterruptionType.began.rawValue ? "Begin Interruption" : "End Interruption") ---\n")
         
-        if theInterruptionType == AVAudioSessionInterruptionType.began.rawValue {
+        if theInterruptionType == AVAudioSession.InterruptionType.began.rawValue {
             // your audio session is deactivated automatically when your app is interrupted
             // perform any other tasks required to handled being interrupted
             
@@ -149,7 +149,7 @@ class ViewController: UIViewController, AVAudioPlayerDelegate {
             
         }
         
-        if theInterruptionType == AVAudioSessionInterruptionType.ended.rawValue {
+        if theInterruptionType == AVAudioSession.InterruptionType.ended.rawValue {
             // make sure to activate the session, it does not get activated for you automatically
             do {
                 try AVAudioSession.sharedInstance().setActive(true)
@@ -172,7 +172,7 @@ class ViewController: UIViewController, AVAudioPlayerDelegate {
     // we just print out the results for informational purposes
     @objc func handleRouteChange(_ notification: Notification) {
         let reasonValue = notification.userInfo![AVAudioSessionRouteChangeReasonKey] as! UInt
-        let reason = AVAudioSessionRouteChangeReason(rawValue: reasonValue)
+        let reason = AVAudioSession.RouteChangeReason(rawValue: reasonValue)
         let routeDescription = notification.userInfo![AVAudioSessionRouteChangePreviousRouteKey] as! AVAudioSessionRouteDescription
         
         NSLog("Route change:")
@@ -240,25 +240,25 @@ class ViewController: UIViewController, AVAudioPlayerDelegate {
         // add AVAudioSession interruption handlers
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(handleInterruption),
-                                               name: .AVAudioSessionInterruption,
+                                               name: AVAudioSession.interruptionNotification,
                                                object: AVAudioSession.sharedInstance())
         
         // we don't do anything special in the route change notification
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(handleRouteChange),
-                                               name: .AVAudioSessionRouteChange,
+                                               name: AVAudioSession.routeChangeNotification,
                                                object: AVAudioSession.sharedInstance())
         
         // if media services are reset, we need to rebuild our audio chain
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(handleMediaServicesWereReset),
-                                               name: .AVAudioSessionMediaServicesWereReset,
+                                               name: AVAudioSession.mediaServicesWereResetNotification,
                                                object: AVAudioSession.sharedInstance())
         
         fileURL = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true).appendingPathComponent("input.caf")
         filePlayer = nil
         
-        NSLog("record file url: \(fileURL)")
+        NSLog("record file url: \(fileURL!)")
     }
     
     private func setupIOUnit() {
@@ -267,7 +267,11 @@ class ViewController: UIViewController, AVAudioPlayerDelegate {
         
         // we are going to play and record so we pick that category
         do {
-            try sessionInstance.setCategory(AVAudioSessionCategoryPlayAndRecord, with: .defaultToSpeaker)
+            if #available(iOS 10.0, *) {
+                try sessionInstance.setCategory(.playAndRecord, mode: .default, options: .defaultToSpeaker)
+            } else {
+                try sessionInstance.setCategory(.playAndRecord, options: .defaultToSpeaker)
+            }
         } catch let error as NSError {
             NSLog("ERROR SETTING AUDIO CATEGORY: \(error.code)")
         }

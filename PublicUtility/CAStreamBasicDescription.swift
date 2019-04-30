@@ -43,6 +43,7 @@ extension CAStreamBasicDescription {
     //	Construction/Destruction
     
     init?(_ inSampleRate: Double, _ inNumChannels: UInt32, _ pcmf: CommonPCMFormat, _ inIsInterleaved: Bool) {
+        self.init()
         
         mSampleRate = inSampleRate
         mFormatID = kAudioFormatLinearPCM
@@ -239,7 +240,7 @@ extension CAStreamBasicDescription {
     
     
     func CAStringForOSType(_ t: OSType) -> String {
-        let str: [UInt8] = (0..<4).map{UInt8(truncatingBitPattern: t >> (24-$0*8))}
+        let str: [UInt8] = (0..<4).map{UInt8(truncatingIfNeeded: t >> (24-$0*8))}
         
         let hasNonPrint = str.reduce(false) {result, c in result || !(isprint(Int32(c)) != 0 && c != UInt8(ascii: "\\"))}
         if !hasNonPrint, let code = String(bytes: str, encoding: .utf8) {
@@ -475,7 +476,7 @@ extension CAStreamBasicDescription {
                             if sscanHex2(p, &x) != 1 {
                                 return false
                             }
-                            buf[i] = CChar(truncatingBitPattern: x)
+                            buf[i] = CChar(truncatingIfNeeded: x)
                             p += 2
                         }
                     }

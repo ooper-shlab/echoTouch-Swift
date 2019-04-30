@@ -137,8 +137,8 @@ class AUOutputBL {
             mBufferSize = nBytes
             
             let memorySize = mBufferSize * mNumberBuffers
-            let newMemory = UnsafeMutableRawBufferPointer.allocate(count: memorySize)
-            newMemory.baseAddress!.initializeMemory(as: UInt8.self, count: memorySize, to: 0)
+            let newMemory = UnsafeMutableRawBufferPointer.allocate(byteCount: memorySize, alignment: 1)
+            newMemory.baseAddress!.initializeMemory(as: UInt8.self, repeating: 0, count: memorySize)
             
             let oldMemory = mBufferMemory
             mBufferMemory = newMemory

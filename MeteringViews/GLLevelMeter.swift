@@ -35,7 +35,7 @@ class GLLevelMeter: LevelMeter {
         
         glBindFramebufferOES(GLenum(GL_FRAMEBUFFER_OES), _viewFramebuffer)
         glBindRenderbufferOES(GLenum(GL_RENDERBUFFER_OES), _viewRenderbuffer)
-        _context.renderbufferStorage(Int(GL_RENDERBUFFER_OES), from: self.layer as! EAGLDrawable)
+        _context.renderbufferStorage(Int(GL_RENDERBUFFER_OES), from: (self.layer as! EAGLDrawable))
         glFramebufferRenderbufferOES(GLenum(GL_FRAMEBUFFER_OES), GLenum(GL_COLOR_ATTACHMENT0_OES), GLenum(GL_RENDERBUFFER_OES), _viewRenderbuffer)
         
         glGetRenderbufferParameterivOES(GLenum(GL_RENDERBUFFER_OES), GLenum(GL_RENDERBUFFER_WIDTH_OES), &_backingWidth)
@@ -154,7 +154,7 @@ class GLLevelMeter: LevelMeter {
                     
                     
                     let vertices = UnsafeMutablePointer<GLfloat>.allocate(capacity: 8)
-                    defer{vertices.deallocate(capacity: 8)}
+                    defer{vertices.deallocate()}
                     vertices.initialize(from: [
                         GLfloat(rect.minX), GLfloat(rect.minY),
                         GLfloat(rect.maxX), GLfloat(rect.minY),
@@ -219,7 +219,7 @@ class GLLevelMeter: LevelMeter {
                     lightRect = lightRect.insetBy(dx: insetAmount, dy: insetAmount)
                     
                     let vertices = UnsafeMutablePointer<GLfloat>.allocate(capacity: 8)
-                    defer{vertices.deallocate(capacity: 8)}
+                    defer{vertices.deallocate()}
                     vertices.initialize(from: [
                         GLfloat(lightRect.minX), GLfloat(lightRect.minY),
                         GLfloat(lightRect.maxX), GLfloat(lightRect.minY),
